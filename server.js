@@ -14,7 +14,7 @@ app.use(express.json());
 app.use("/api/contact", require("./routes/contactRoutes"));
 app.use(errorHandler);
 
-
+connectDb();
 app.listen(port, () => {
 console.log(`server running on ${port}`);
 });
@@ -26,6 +26,8 @@ http://localhost:5001/api/contact
 
 */
 // npm install dotenv
+
+// FWviRBs9vjTNVmj8
 
 
 

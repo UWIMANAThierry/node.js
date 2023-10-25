@@ -19,17 +19,24 @@ const errorHandler = (err, req, res, next) => {
 
                 case constants.UNAUTHORIZED:
                 res.json({
-                title: "Not Found",
+                title: "Un authorized",
                 message: err.message,
                 stackTrace: err.stack,
                 });
                 case constants.FORBIDDEN:
                     res.json({
-                    title: "Not Found",
+                    title: "forbidden",
+                    message: err.message,
+                    stackTrace: err.stack,
+                    });
+                case constants.SERVER_ERROR:
+                    res.json({
+                    title: "Server error",
                     message: err.message,
                     stackTrace: err.stack,
                     });
                 default:
+                    console.log("No Error, All good !");
                     break;
 
     }
