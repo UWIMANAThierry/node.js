@@ -16,6 +16,11 @@
  const createContact = (req, res) => {
     // we may even use json format
     res.status(201).json({message: "Create contacts"});
+    const {name, email, phone} = req.body;
+    if(!name || !email || !phone) {
+        res.status(400);
+        throw new Error("All fields are mandatory !");
+    }
     // res.send("Get all contacts");
 };
 

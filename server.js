@@ -1,4 +1,5 @@
 const express = require("express");
+const errorHandler = require("./middleware/errorHandler");
 const dotenv = require("dotenv").config();
 
 const app = express();
@@ -11,6 +12,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use("/api/contact", require("./routes/contactRoutes"));
+app.use(errorHandler);
 
 
 app.listen(port, () => {
@@ -23,7 +25,7 @@ you can use lets try thunder client
 http://localhost:5001/api/contact
 
 */
-
+// npm install dotenv
 
 
 
