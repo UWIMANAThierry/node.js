@@ -1,13 +1,16 @@
-const asynchHandler = require("express-async-handler");
+const asyncHandler = require("express-async-handler");
+
+const  Contact = require("../models/contactModel");
 
 //@desc Get all contacts
  //@route GET /api/contact
  //@access public
 
- const getContacts = asynchHandler(async(req, res) => {
+ const getContacts = asyncHandler(async(req, res) => {
+    const contact = await Contact.find();
     console.log("The request body is:",req.body);
     // we may even use json format
-    res.status(200).json({message: "Get all contacts"});
+    res.status(200).json(contact);
     // res.send("Get all contacts");
 });
 
@@ -15,7 +18,7 @@ const asynchHandler = require("express-async-handler");
  //@route POST /api/contact
  //@access public
 
- const createContact = asynchHandler(async(req, res) => {
+ const createContact = asyncHandler(async(req, res) => {
     // we may even use json format
     res.status(201).json({message: "Create contacts"});
     const {name, email, phone} = req.body;
@@ -23,17 +26,29 @@ const asynchHandler = require("express-async-handler");
         res.status(400);
         throw new Error("All fields are mandatory !");
     }
-    // res.send("Get all contacts");
+
+    const contact = await Contact.create({
+        name,
+        email,
+        phone,
+    });
+    //res.send("Get all contacts");
+    res.status(201).json(contact);
 });
 
 //@desc Get contact
  //@route GET /api/contact/:id
  //@access public
 
- const getContact = asynchHandler(async(req, res) => {
-    // we may even use json format
-    res.status(200).json({message: `Get contacts for ${req.params.id}`});
-    // res.send("Get all contacts");
+ const getContact = asyncHandler(async (req, res) => {
+    const contact = await Contact.findById(req.params.id);
+
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact not Found");
+    }
+    res.status(200).json(contact);
+
 });
 
 
@@ -41,17 +56,29 @@ const asynchHandler = require("express-async-handler");
  //@route PUT /api/contact/:id
  //@access public
 
- const updateContact = asynchHandler(async(req, res) => {
-    // we may even use json format
-    res.status(200).json({message: `Update contacts for ${req.params.id}`});
-    // res.send("Get all contacts");
+ const updateContact = asyncHandler(async(req, res) => {
+    const contact = await Contact.findById(req.params.id);
+
+    if(!contact){
+        res.status(404);
+        throw new Error("Contact not Found");
+    }
+
+    const updateContact = await Contact.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true}
+    );
+
+    res.status(200).json(updateContact);
+   
 });
 
 //@desc Delete contact
  //@route Delete /api/contact/:id
  //@access public
 
- const DeleteContact = asynchHandler(async(req, res) => {
+ const DeleteContact = asyncHandler(async(req, res) => {
     // we may even use json format
     res.status(200).json({message: `Delete contacts for ${req.params.id}`});
     // res.send("Get all contacts");
